@@ -67,82 +67,89 @@ const templates = [
     ),
   },
 ]
-
-const options = ref({
-  locale,
-  // theme: 'auto',
-  // skin: 'modern',
-  toolbar: {
-    // defaultMode: 'classic',
-    // menus: ['base'],
-  },
-  document: {
-    title: tr('测试文档', 'Test Document'),
-    content:
-      localStorage.getItem('document.content') || tr('<p>测试文档</p>', '<p>Test document</p>'),
-    // structure: 'heading block*',
-  },
-  page: {
-    layouts: ['page', 'web'],
-    showBookmark: true,
-  },
-  templates,
-  cdnUrl: 'https://cdn.umodoc.com',
-  shareUrl: 'https://www.umodoc.com',
-  file: {
-    // allowedMimeTypes: [
-    //   'application/pdf',
-    //   'image/svg+xml',
-    //   'video/mp4',
-    //   'audio/*',
-    // ],
-  },
-  user: {
-    id: 'umoeditor',
-    label: 'Umo Editor',
-    avatar: 'https://tdesign.gtimg.com/site/avatar.jpg',
-  },
-  users: [
-    { id: 'umodoc', label: 'Umo Team' },
-    { id: 'Cassielxd', label: 'Cassielxd' },
-    { id: 'Goldziher', label: "Na'aman Hirschfeld" },
-    { id: 'SerRashin', label: 'SerRashin' },
-    { id: 'ChenErik', label: 'ChenErik' },
-    { id: 'china-wangxu', label: 'china-wangxu' },
-    { id: 'Sherman Xu', label: 'xuzhenjun130' },
-    { id: 'testuser', label: tr('测试用户', 'Test User') },
-  ],
-  // https://dev.umodoc.com/cn/docs/options/extensions#disableextensions
-  disableExtensions: [],
-  async onSave(content, page, document) {
-    // 将文档和评论线程保存到 localStorage
-    localStorage.setItem('document.content', content.html)
-    // 模拟保存等待过程
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('onSave', { content, page, document })
-        resolve(tr('文档保存成功', 'Document saved successfully'))
-      }, 2000)
-    })
-  },
-  async onFileUpload(file) {
-    if (!file) {
-      throw new Error(tr('没有找到要上传的文件', 'No file found to upload'))
-    }
-    console.log('onUpload', file)
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-    return {
-      id: shortId(),
-      url: file.url || URL.createObjectURL(file),
-      name: file.name,
-      type: file.type,
-      size: file.size,
-    }
-  },
-  onFileDelete(id, url, type) {
-    console.log(id, url, type)
-  },
-})
+let theEditorConfig = window.theEditorConfig;
+if(!theEditorConfig){
+  theEditorConfig={
+    locale,
+    // theme: 'auto',
+    // skin: 'modern',
+    toolbar: {
+      // defaultMode: 'classic',
+      // menus: ['base'],
+    },
+    document: {
+      title: tr('测试文档', 'Test Document'),
+      content:
+        localStorage.getItem('document.content') || tr('<p>测试文档</p>', '<p>Test document</p>'),
+      // structure: 'heading block*',
+    },
+    page: {
+      layouts: ['page', 'web'],
+      showBookmark: true,
+    },
+    templates,
+    cdnUrl: 'https://cdn.umodoc.com',
+    shareUrl: 'https://www.umodoc.com',
+    file: {
+      // allowedMimeTypes: [
+      //   'application/pdf',
+      //   'image/svg+xml',
+      //   'video/mp4',
+      //   'audio/*',
+      // ],
+    },
+    user: {
+      id: 'umoeditor',
+      label: 'Umo Editor',
+      avatar: 'https://tdesign.gtimg.com/site/avatar.jpg',
+    },
+    users: [
+      { id: 'umodoc', label: 'Umo Team' },
+      { id: 'Cassielxd', label: 'Cassielxd' },
+      { id: 'Goldziher', label: "Na'aman Hirschfeld" },
+      { id: 'SerRashin', label: 'SerRashin' },
+      { id: 'ChenErik', label: 'ChenErik' },
+      { id: 'china-wangxu', label: 'china-wangxu' },
+      { id: 'Sherman Xu', label: 'xuzhenjun130' },
+      { id: 'testuser', label: tr('测试用户', 'Test User') },
+    ],
+    // https://dev.umodoc.com/cn/docs/options/extensions#disableextensions
+    disableExtensions: [
+      'image', 'video', 'audio', 'file'
+    ],
+    async onSave(content, page, document) {
+      alert(1123)
+      // 将文档和评论线程保存到 localStorage
+      localStorage.setItem('document.content', content.html)
+      // 模拟保存等待过程
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log('onSave', { content, page, document })
+          resolve(tr('文档保存成功', 'Document saved successfully'))
+        }, 2000)
+      })
+    },
+    async onFileUpload(file) {
+      if (!file) {
+        throw new Error(tr('没有找到要上传的文件', 'No file found to upload'))
+      }
+      console.log('onUpload', file)
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+      return {
+        id: shortId(),
+        url: file.url || URL.createObjectURL(file),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      }
+    },
+    onFileDelete(id, url, type) {
+      console.log(id, url, type)
+    },
+  };
+}
+theEditorConfig.locale=locale;
+const options = ref(theEditorConfig)
 </script>
 
 <style>
